@@ -2,11 +2,22 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import { useForm } from '../context/FormContext';
 
 type ProfileTypeProps = NativeStackScreenProps<RootStackParamList, 'ProfileType'>;
 
 const ProfileTypeScreen: React.FC<ProfileTypeProps> = ({ navigation }) => {
+  const { setProfileType } = useForm();
   const [type, setType] = useState<'aluno' | 'profissional' | null>(null);
+
+  const handleNext = () => {
+    setProfileType(type!);
+    
+    if (type === 'profissional') {
+      navigation.navigate('ProfessionalName');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
@@ -27,7 +38,7 @@ const ProfileTypeScreen: React.FC<ProfileTypeProps> = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.nextButton, !type && styles.nextDisabled]}
-        onPress={() => {/* avançar fluxo */}}
+        onPress={handleNext}
         disabled={!type}
       >
         <Text style={styles.nextText}>Próximo</Text>
