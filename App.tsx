@@ -1,14 +1,17 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import AppNavigator from './src/navigation/AppNavigator';
+import { AuthProvider } from './src/context/AuthContext';
 import { FormProvider } from './src/context/FormContext';
+import AppNavigator from './src/navigation/AppNavigator';
 
 const App: React.FC = () => (
-  <FormProvider>
-    <NavigationContainer>
-      <AppNavigator />
-    </NavigationContainer>
-  </FormProvider>
+  <AuthProvider>
+    <FormProvider>
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+    </FormProvider>
+  </AuthProvider>
 );
 
 export default App;
