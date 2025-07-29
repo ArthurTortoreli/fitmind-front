@@ -7,9 +7,9 @@ type OnboardingProps = NativeStackScreenProps<RootStackParamList, 'Onboarding'>;
 const { width } = Dimensions.get('window');
 
 const onboardingData = [
-  { key: '1', title: 'Quer enxergar suas conquistas?', description: 'Comece a registrar sua rotina', image: require('../../assets/logo.png') },
-  { key: '2', title: 'Entenda sua alimentação e treino', description: 'Veja como influenciam sua vida', image: require('../../assets/logo.png') },
-  { key: '3', title: 'Presença e foco', description: 'Cultive bons hábitos alimentares e físicos', image: require('../../assets/logo.png') },
+  { key: '1', title: 'Quer enxergar suas conquistas?', description: 'Comece a registrar sua rotina', image: require('../../assets/personal.jpeg') },
+  { key: '2', title: 'Entenda sua alimentação e treino', description: 'Veja como influenciam sua vida', image: require('../../assets/mulher-treinando.jpeg') },
+  { key: '3', title: 'Presença e foco', description: 'Cultive bons hábitos alimentares e físicos', image: require('../../assets/prato-comida.jpeg') },
 ];
 
 const OnboardingScreen: React.FC<OnboardingProps> = ({ navigation }) => {

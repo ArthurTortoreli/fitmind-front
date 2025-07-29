@@ -1,25 +1,36 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { useForm } from '../context/FormContext';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { useForm } from '../../context/FormContext';
+import { registerProfessional } from '../../services/api';
 
-type PropsService = NativeStackScreenProps<RootStackParamList, 'ProfessionalService'>;
+type PropsVolume = NativeStackScreenProps<RootStackParamList, 'ProfessionalVolume'>;
 
-const ProfessionalServiceScreen: React.FC<PropsService> = ({ navigation }) => {
-    const { setService } = useForm();
-  const [service, setLocalService] = useState<string | null>(null);
+const ProfessionalVolumeScreen: React.FC<PropsVolume> = ({ navigation }) => {
+  const { data } = useForm();
+  const { setVolume } = useForm();
+  const [volume, setLocalVolume] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleNext = () => {
-    setService(service!);
-    navigation.navigate('ProfessionalVolume');
+  const handleNext = async () => {
+    setVolume(volume!);
+    setLoading(true);
+    try {
+      await registerProfessional({ ...data, volume: volume! });
+      navigation.navigate('Confirmation');
+    } catch {
+      // handle error
+    } finally {
+      setLoading(false);
+    }
   };
-  const progressPercent = 60;
+  const progressPercent = 80;
   const options = [
-    'Somente no Plano de Saúde',
-    'Somente no Particular',
-    'Mais no Plano do que no Particular',
-    'Mais no Particular do que no Plano',
+    'Entre 0 e 10 por mês',
+    'Entre 10 e 30 por mês',
+    'Entre 30 e 50 por mês',
+    'Mais de 50 por mês',
   ];
 
   return (
@@ -28,12 +39,12 @@ const ProfessionalServiceScreen: React.FC<PropsService> = ({ navigation }) => {
         <View style={[styles.progressBar, { width: `${progressPercent}%` }]} />
         <Text style={styles.progressText}>{progressPercent}%</Text>
       </View>
-      <Text style={styles.title}>Como você costuma atender seus pacientes?</Text>
+      <Text style={styles.title}>Quantas pessoas você atende mensalmente?</Text>
       {options.map((opt) => (
         <TouchableOpacity
           key={opt}
-          style={[styles.option, service === opt && styles.selected]}
-          onPress={() => setLocalService(opt)}
+          style={[styles.option, volume === opt && styles.selected]}
+          onPress={() => setLocalVolume(opt)}
         >
           <Text style={styles.optionText}>{opt}</Text>
         </TouchableOpacity>
@@ -43,11 +54,11 @@ const ProfessionalServiceScreen: React.FC<PropsService> = ({ navigation }) => {
           <Text style={styles.backText}>{'<'} Voltar</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.nextButton, !service && styles.nextDisabled]}
+          style={[styles.nextButton, !volume && styles.nextDisabled]}
           onPress={handleNext}
-          disabled={!service}
+          disabled={!volume}
         >
-          <Text style={styles.nextText}>Próximo</Text>
+           {loading ? <ActivityIndicator /> : <Text>Próximo</Text>}
         </TouchableOpacity>
       </View>
     </View>
@@ -70,4 +81,4 @@ const styles = StyleSheet.create({
   nextText: { color: '#164863', fontWeight: 'bold' },
 });
 
-export default ProfessionalServiceScreen;
+export default ProfessionalVolumeScreen;

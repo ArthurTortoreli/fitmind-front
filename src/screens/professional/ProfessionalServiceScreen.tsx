@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { useForm } from '../context/FormContext';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { useForm } from '../../context/FormContext';
 
-type PropsRole = NativeStackScreenProps<RootStackParamList, 'ProfessionalRole'>;
+type PropsService = NativeStackScreenProps<RootStackParamList, 'ProfessionalService'>;
 
-const ProfessionalRoleScreen: React.FC<PropsRole> = ({ navigation }) => {
-    const { setRole } = useForm();
-  const [role, setLocalRole] = useState<'nutricionista' | 'personal' | null>(null);
+const ProfessionalServiceScreen: React.FC<PropsService> = ({ navigation }) => {
+    const { setService } = useForm();
+  const [service, setLocalService] = useState<string | null>(null);
 
   const handleNext = () => {
-    setRole(role!);
-    navigation.navigate('ProfessionalService');
+    setService(service!);
+    navigation.navigate('ProfessionalVolume');
   };
-  const progressPercent = 40;
+  const progressPercent = 60;
+  const options = [
+    'Somente no Plano de Saúde',
+    'Somente no Particular',
+    'Mais no Plano do que no Particular',
+    'Mais no Particular do que no Plano',
+  ];
 
   return (
     <View style={styles.container}>
@@ -22,27 +28,24 @@ const ProfessionalRoleScreen: React.FC<PropsRole> = ({ navigation }) => {
         <View style={[styles.progressBar, { width: `${progressPercent}%` }]} />
         <Text style={styles.progressText}>{progressPercent}%</Text>
       </View>
-      <Text style={styles.title}>Como você atua hoje?</Text>
-      <TouchableOpacity
-        style={[styles.option, role === 'nutricionista' && styles.selected]}
-        onPress={() => setLocalRole('nutricionista')}
-      >
-        <Text style={styles.optionText}>🥗 Sou nutricionista</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.option, role === 'personal' && styles.selected]}
-        onPress={() => setLocalRole('personal')}
-      >
-        <Text style={styles.optionText}>🏋️ Sou personal trainer</Text>
-      </TouchableOpacity>
+      <Text style={styles.title}>Como você costuma atender seus pacientes?</Text>
+      {options.map((opt) => (
+        <TouchableOpacity
+          key={opt}
+          style={[styles.option, service === opt && styles.selected]}
+          onPress={() => setLocalService(opt)}
+        >
+          <Text style={styles.optionText}>{opt}</Text>
+        </TouchableOpacity>
+      ))}
       <View style={styles.footer}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>{'<'} Voltar</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.nextButton, !role && styles.nextDisabled]}
+          style={[styles.nextButton, !service && styles.nextDisabled]}
           onPress={handleNext}
-          disabled={!role}
+          disabled={!service}
         >
           <Text style={styles.nextText}>Próximo</Text>
         </TouchableOpacity>
@@ -67,4 +70,4 @@ const styles = StyleSheet.create({
   nextText: { color: '#164863', fontWeight: 'bold' },
 });
 
-export default ProfessionalRoleScreen;
+export default ProfessionalServiceScreen;

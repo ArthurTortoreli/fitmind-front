@@ -15,6 +15,8 @@ const ProfileTypeScreen: React.FC<ProfileTypeProps> = ({ navigation }) => {
     
     if (type === 'profissional') {
       navigation.navigate('ProfessionalName');
+    } else if (type == 'aluno') {
+      navigation.navigate('StudentDetails');
     }
   };
 

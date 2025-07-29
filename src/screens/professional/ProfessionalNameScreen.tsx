@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { useForm } from '../context/FormContext';
+import { RootStackParamList } from '../../navigation/AppNavigator';
+import { useForm } from '../../context/FormContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ProfessionalName'>;
 
